@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer, useRef, useState } from "react";
+import PropTypes from "prop-types";
 
 const AuthContext = createContext();
 
@@ -24,16 +25,19 @@ function AuthProvider({ children }) {
     initiatState
   );
   const [username, setUsername] = useState("");
+  const [isLogin, setIssLoggingin] = useState("Log in");
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
 
   async function Login() {
-    console.log(username, pwd);
     try {
       const userData = { username, password: pwd };
+      setIssLoggingin("Logging in...");
+      setIsAuthenticating(true);
       const res = await fetch(
-        "https://memorialbackendupdated.onrender.com/api/v1/users/login",
+        "https://memorial.adaptable.app/api/v1/users/login",
         {
           method: "POST",
           headers: {
@@ -46,8 +50,13 @@ function AuthProvider({ children }) {
       const data = await res.json();
       if (!res.ok) {
         setErrMsg(data.message);
+        setIssLoggingin("Log in");
+        setIsAuthenticating(false);
       } else {
-        dispatch({ type: "login", payload: { username, password: pwd } });
+        dispatch({ type: "login", payload: userData });
+        setIssLoggingin("Log in");
+        setIsAuthenticating(false);
+
         setUsername("");
         setPwd("");
       }
@@ -55,13 +64,13 @@ function AuthProvider({ children }) {
       if (err.status === 400) {
         setErrMsg("username or password incorrect");
       }
-
-      console.log(err);
       errRef.current.focus();
     }
   }
 
-  function Logout() {}
+  function Logout() {
+    dispatch({ type: "logout" });
+  }
   return (
     <AuthContext.Provider
       value={{
@@ -74,12 +83,21 @@ function AuthProvider({ children }) {
         setUsername,
         setPwd,
         isAuthenticated,
+        Logout,
+        user,
+        isAuthenticating,
+        isLogin,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
+
+AuthProvider.propTypes = {
+  children: PropTypes.any,
+};
+
 function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined)

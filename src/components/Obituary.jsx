@@ -1,41 +1,44 @@
+import { useTribute } from "../Context/TributeContext";
+
 function Obituary() {
+  const { bioRef } = useTribute();
+
   return (
-    <section className="text-center desktop:ml-36 desktop:mr-36">
-      <h1 className=" mb-4 font-bold desktop:text-3xl mt-8">BACKGROUND</h1>
+    <section
+      className=" desktop:ml-36 desktop:mr-36 mobile:ml-20 mobile:mr-20 phone:mx-4 small:mx-3 mt-32 phone:mt-56 text-justify break-all"
+      ref={bioRef}
+    >
+      <h1 className=" mb-4 font-bold text-2xl mt-8  text-center">BACKGROUND</h1>
       <p
         className="first-line:tracking-wide
-  first-letter:text-5xl first-letter:font-bold first-letter:text-slate-900
-  first-letter:mr-1 first-letter:pt-4"
+  first-letter:text-4xl first-letter:font-bold first-letter:text-slate-900
+   first-letter:pt-4 text-[1.2rem] leading-10"
       >
-        <span className=" mobile:text-[1rem] desktop:text-[1.5rem] desktop:leading-10  ">
-          <em>
-            Christiana Titilayo, Aduke, Adunni, Laarin Sunmola (nee Adenuga)
-          </em>
-          , was born on 19th February 1980 to the family of late Mr Rufus Adeoye
-          Adenuga JP and Mrs Cecilia Aderonke Adenuga in the city of Lagos
-          Nigeria. The only daughter and third of four children, Titilayo grew
-          up with her three brothers, James Adeyemi, Peter Adesola and Godwin
-          Olusegun, who all doted on their only sister. She was a determined,
-          strong-willed, passionate and focused lady with a deep sense of family
-          ethos and love for God as she went through her educational, career
-          development path and Church functional service commitments.
-        </span>
+        <em>
+          Christiana Titilayo, Aduke, Adunni, Laarin Sunmola (nee Adenuga)
+        </em>
+        , was born on 19th February 1980 to the family of late Mr Rufus Adeoye
+        Adenuga JP and Mrs Cecilia Aderonke Adenuga in the city of Lagos
+        Nigeria. The only daughter and third of four children, Titilayo grew up
+        with her three brothers, James Adeyemi, Peter Adesola and Godwin
+        Olusegun, who all doted on their only sister. She was a determined,
+        strong-willed, passionate and focused lady with a deep sense of family
+        ethos and love for God as she went through her educational, career
+        development path and Church functional service commitments.
       </p>
-      <h1 className=" mb-4 mt-16 font-bold desktop:text-3xl">FAMILY</h1>
-      <p>
-        <span className="mobile:text-[1rem] desktop:text-[1.5rem]  desktop:leading-10">
-          In August 2005, Titilayo got married to the boy next door, her
-          sweetheart, Adesesan Sunmola and the union was blessed with three
-          amazing children, Oluwademilade Enoch, Oluwabusolami Christabel and
-          Onaopemipo Philip. Titilayo fiercely loved her Sessy and their
-          children and would go to any length to do anything for them.
-        </span>
+      <h1 className=" mb-4 mt-16 font-bold text-2xl text-center">FAMILY</h1>
+      <p className=" text-[1.2rem] leading-10">
+        In August 2005, Titilayo got married to the boy next door, her
+        sweetheart, Adesesan Sunmola and the union was blessed with three
+        amazing children, Oluwademilade Enoch, Oluwabusolami Christabel and
+        Onaopemipo Philip. Titilayo fiercely loved her Sessy and their children
+        and would go to any length to do anything for them.
       </p>
-      <h1 className=" mb-4 mt-16 font-bold  desktop:text-3xl">
+      <h1 className=" mb-4 mt-16 font-bold text-2xl text-center">
         EDUCATION & OCCUPATION
       </h1>
       <p>
-        <span className="mobile:text-[1rem] desktop:text-[1.5rem]  desktop:leading-10">
+        <span className="text-[1.2rem] leading-10">
           Titilayo had her primary education at NAFRC Primary School Oshodi
           Lagos from 1985 to 1989. She completed her secondary education at
           Command Day Secondary School Ikeja from 1990 to 1995. Following that,
@@ -47,7 +50,7 @@ function Obituary() {
         </span>
       </p>
       <p className="mt-8">
-        <span className="mobile:text-[1rem] desktop:text-[1.5rem]  desktop:leading-10">
+        <span className=" text-[1.2rem] leading-10">
           Titilayo admirably qualified as a Chartered Accountant (ICAN-ACA) in
           2005, obtained a PgD in Education in 2013, and obtained her
           Master&apos;s degree in Banking & Finance at Ahmadu Bello University
@@ -55,7 +58,7 @@ function Obituary() {
         </span>
       </p>
       <p className="mt-8">
-        <span className="mobile:text-[1rem] desktop:text-[1.5rem]  desktop:leading-10">
+        <span className="text-[1.2rem] leading-10">
           Titilayo started her professional career at WAMCO (West Africa Milk
           Company) in 2001 as a Stock Control Officer before proceeding on to
           National Youth Service. She worked with the same company till she got
@@ -70,11 +73,11 @@ function Obituary() {
           with the Lord.
         </span>
       </p>
-      <h1 className=" mb-4 mt-16 font-bold  desktop:text-3xl">
+      <h1 className=" mb-4 mt-16 font-bold text-center text-2xl">
         SERVICE TO HUMANITY
       </h1>
       <p>
-        <span className="mobile:text-[1rem] desktop:text-[1.5rem]  desktop:leading-10">
+        <span className=" text-[1.2rem]  leading-10">
           Titilayo was true to her name as forever joyful. She was a carrier and
           distributor of joy; she did this in so many ways as can be attested to
           by the many people she came in contact with throughout her life, from
@@ -90,11 +93,11 @@ function Obituary() {
           counsellor and role model to many families.
         </span>
       </p>
-      <h1 className=" mb-4 mt-16 font-bold  desktop:text-3xl">
+      <h1 className=" mb-4 mt-16 font-bold text-2xl text-center">
         SERVICE TO GOD
       </h1>
       <p>
-        <span className="mobile:text-[1rem] desktop:text-[1.5rem]  desktop:leading-10 ">
+        <span className=" text-[1.2rem]  leading-10 ">
           Titilayo was dogged in her faith in God and was, therefore, exemplary
           in her service to Him. She characterized such great Christian virtues,
           having a very large Heart for people. Being a devoted Christian woman,

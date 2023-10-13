@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
-import { useContext } from "react";
-import { TributeContext } from "../Context/TributeContext";
+import { useTribute } from "../Context/TributeContext";
 import { useAuth } from "../Context/AuthContext";
+import { useState } from "react";
 
 function TributeList({ openUpDateForm, tribute }) {
-  const { fetchTributes } = useContext(TributeContext);
+  const { fetchTributes, fetchOneTribute } = useTribute();
   const isoDate = tribute.date;
   const { isAuthenticated } = useAuth();
+  const [success, setSuccess] = useState(false);
   const date = new Date(isoDate);
 
   const options = {
@@ -27,7 +28,7 @@ function TributeList({ openUpDateForm, tribute }) {
     if (confirmed) {
       try {
         const response = await fetch(
-          `https://memorialbackendupdated.onrender.com/api/v1/users/tribute`,
+          `https://memorial.adaptable.app/api/v1/users/tribute`,
           {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
@@ -35,13 +36,10 @@ function TributeList({ openUpDateForm, tribute }) {
           }
         );
 
-        if (response.status === 204) {
-          fetchTributes();
-        } else {
-          // Handle deletion failure on the front end (if needed)
-        }
+        if (response.status === 204) fetchTributes();
+        setSuccess(true);
       } catch (error) {
-        // Handle fetch error here (network issue, etc.)
+        setSuccess(false);
       }
     }
   };
@@ -50,11 +48,16 @@ function TributeList({ openUpDateForm, tribute }) {
     <>
       {tribute && (
         <li className=" bg-white shadow-lg rounded-lg p-4 text-gray-500 border-2 mb-4">
-          <div className=" flex justify-between">
+          <div className=" flex justify-between mb-8">
             <em>{formattedDate}</em>
             {isAuthenticated && (
               <div className=" justify-around flex gap-4">
-                <button onClick={() => openUpDateForm(tribute._id)}>
+                <button
+                  onClick={() => {
+                    openUpDateForm(tribute._id);
+                    fetchOneTribute(tribute._id);
+                  }}
+                >
                   Edit
                 </button>
                 <button
@@ -66,8 +69,13 @@ function TributeList({ openUpDateForm, tribute }) {
               </div>
             )}
           </div>
-          <p className=" text-center">{tribute.tribute}</p>
-          <p className=" text-right">{tribute.name}</p>
+          <p className=" text-justify">{tribute.tribute}</p>
+          <p className=" text-right font-bold text-black">
+            {tribute.name}
+            {tribute.relationship && (
+              <span>({tribute.relationship?.toUpperCase()})</span>
+            )}
+          </p>
         </li>
       )}
     </>
@@ -78,6 +86,7 @@ TributeList.propTypes = {
   tribute: PropTypes.object,
   openUpDateForm: PropTypes.func,
   fetchTributes: PropTypes.func,
+  relationship: PropTypes.string, // Add this line
 };
 
 export default TributeList;

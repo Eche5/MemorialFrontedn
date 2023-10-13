@@ -1,21 +1,24 @@
 import PropTypes from "prop-types";
-
-import TributeList from "./TributeList";
-import { useContext } from "react";
-import { TributeContext } from "../Context/TributeContext";
+import Loader from "../components/Loader";
+import { useTribute } from "../Context/TributeContext";
+import { Suspense, lazy } from "react";
+const TributeList = lazy(() => import("./TributeList"));
 
 function PostedTributes({ openUpDateForm }) {
-  const { tributes, success } = useContext(TributeContext);
+  const { tributes, success } = useTribute();
+
   return (
     <section className="flex flex-col justify-center items-center">
       <div className="desktop:w-[800px] phone:w-[400px]">
-        <ul className="w-full justify-between p-4">
+        <ul className="w-full justify-between p-4 transition-all">
           {tributes.map((tribute) => (
-            <TributeList
-              tribute={tribute}
-              key={tribute._id}
-              openUpDateForm={openUpDateForm}
-            />
+            <Suspense fallback={<Loader />} key={tribute._id}>
+              <TributeList
+                tribute={tribute}
+                key={tribute._id}
+                openUpDateForm={openUpDateForm}
+              />
+            </Suspense>
           ))}
         </ul>
       </div>

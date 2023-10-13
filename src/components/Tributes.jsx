@@ -1,21 +1,39 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useTribute } from "../Context/TributeContext";
 
 import PostedTributes from "./PostedTributes";
-import { TributeContext } from "../Context/TributeContext";
 
 function Tributes() {
-  const { setTribute, tribute, name, setName, fetchTributes } =
-    useContext(TributeContext);
+  const {
+    setTribute,
+    tribute,
+    name,
+    setName,
+    fetchTributes,
+    setRelationship,
+    relationship,
+    tributeRef,
+  } = useTribute();
+
   const nameRef = useRef();
   const [image, setImage] = useState(null);
-
   const [writeTribute, setWriteTribute] = useState(false);
   const [succMsg, setSuccMsg] = useState("");
   const [sentTribute, setSentTribute] = useState(false);
   const navigate = useNavigate();
   const [valid, setIsValid] = useState(false);
+
+  const scrollToTributes = useCallback(() => {
+    if (tributeRef.current) {
+      tributeRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [tributeRef]);
+
+  useEffect(() => {
+    scrollToTributes();
+  }, [scrollToTributes]);
 
   useEffect(() => {
     if (writeTribute && nameRef.current) {
@@ -26,6 +44,7 @@ function Tributes() {
   const openUpDateForm = (id) => {
     navigate(`/tributes/${id}`);
   };
+
   //form validation
   useEffect(() => {
     if (name.length >= 3 && tribute.length >= 3) {
@@ -35,25 +54,16 @@ function Tributes() {
     }
   }, [name, tribute]);
 
-  //controlled Api request
-  const debouncedFetchTributes = useRef(
-    debounce(fetchTributes, 1000) // Adjust the debounce delay as needed
-  ).current;
   useEffect(() => {
-    const controller = new AbortController();
-    debouncedFetchTributes();
-    return function () {
-      controller.abort();
-    };
-  }, [name, tribute]);
+    fetchTributes();
+  }, [name, fetchTributes]);
 
-  //submiteTribute
   const submitTributeHandler = async (e) => {
     e.preventDefault();
     setWriteTribute(false);
-    const tributes = { name, tribute };
+    const tributes = { name, tribute, relationship };
     const res = await fetch(
-      "https://memorialbackendupdated.onrender.com/api/v1/users/tribute",
+      "https://memorial.adaptable.app/api/v1/users/tribute",
       {
         method: "POST",
         body: JSON.stringify(tributes),
@@ -61,6 +71,7 @@ function Tributes() {
       }
     );
     const data = await res.json();
+    console.log(data);
     if (!res.ok) {
       setSuccMsg(data.message);
       fetchTributes();
@@ -69,6 +80,7 @@ function Tributes() {
       setSuccMsg(data.message);
       setName("");
       setTribute("");
+      setRelationship("");
     }
 
     setTimeout(() => {
@@ -94,7 +106,9 @@ function Tributes() {
     <>
       <section className="flex justify-center items-center">
         <div className="text-center">
-          <h1 className="mb-4 mt-16 font-bold text-3xl">Tributes</h1>
+          <h1 className="mb-4 mt-16 font-bold text-3xl" ref={tributeRef}>
+            Tributes
+          </h1>
           {!writeTribute && (
             <button
               onClick={writeTributeHandler}
@@ -112,7 +126,11 @@ function Tributes() {
             </button>
           )}
           {writeTribute && (
-            <section className=" flex flex-col justify-center p-4 bg-gray-600 rounded-lg">
+            <section className=" flex flex-col justify-center p-4  rounded-lg">
+              <p>
+                Fill out the fields below to leave memories, condolences, and/or
+                photos.
+              </p>
               <form onSubmit={submitTributeHandler}>
                 <div className="flex-col flex justify-evenly flex-grow-0 p-2 gap-4">
                   <input
@@ -123,7 +141,15 @@ function Tributes() {
                     ref={nameRef}
                     placeholder="Your Name"
                     onChange={(e) => setName(e.target.value)}
-                    className=" rounded-lg p-2 border-[#fffbf2] border-2"
+                    className=" rounded-lg p-2 border-gray-600 border-2"
+                  />
+                  <input
+                    id="relationship"
+                    type="text"
+                    value={relationship}
+                    placeholder="Your Relationship"
+                    onChange={(e) => setRelationship(e.target.value)}
+                    className=" rounded-lg p-2 border-gray-600 border-2"
                   />
                   <textarea
                     id="message"
@@ -132,7 +158,7 @@ function Tributes() {
                     required
                     value={tribute}
                     placeholder="Your Tribute"
-                    className=" rounded-lg p-2"
+                    className=" rounded-lg p-2 border-gray-600 border-2"
                     onChange={(e) => setTribute(e.target.value)}
                   />
                   <label className="block">
@@ -153,8 +179,8 @@ function Tributes() {
                   type="submit"
                   className={
                     !valid
-                      ? " ml-2 cursor-not-allowed bg-white border-2 rounded-full px-2 flex hover:bg-[#fffbf2]"
-                      : " ml-2 bg-white border-2 rounded-md flex hover:bg-[#fffbf2]"
+                      ? " ml-2 cursor-not-allowed bg-white border-2 rounded-full px-4 py-2 flex hover:bg-[#fffbf2]"
+                      : " ml-2 bg-white border-2 rounded-full flex hover:bg-[#fffbf2] px-4 py-2"
                   }
                   disabled={!valid}
                 >
@@ -170,16 +196,6 @@ function Tributes() {
       {!writeTribute && <PostedTributes openUpDateForm={openUpDateForm} />}
     </>
   );
-}
-
-function debounce(func, delay) {
-  let timer;
-  return function (...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      func.apply(this, args);
-    }, delay);
-  };
 }
 
 Tributes.propTypes = {
