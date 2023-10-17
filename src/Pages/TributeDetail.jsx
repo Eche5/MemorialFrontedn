@@ -4,23 +4,31 @@ import { useTribute } from "../Context/TributeContext";
 
 function TributeDetail() {
   const [valid, setIsValid] = useState(false);
+
   const [update, isUpDated] = useState(false);
+
   const [image, setImage] = useState(null);
+
   const [tribute, setTribute] = useState("");
 
   const { editTribute } = useTribute();
+
   useEffect(() => {
     if (editTribute.length > 1) setTribute(editTribute);
   }, [editTribute]);
 
   const tributeRef = useRef();
+
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
+
     setImage(selectedImage);
   };
 
   const { tributeId } = useParams();
+
   const navigate = useNavigate();
+
   useEffect(() => {
     document.title = "Mrs. Sunmola | rewrite Tribute";
   }, []);
@@ -33,29 +41,35 @@ function TributeDetail() {
       setIsValid(false);
     }
   }, [tribute]);
+
   useEffect(() => {
     tributeRef.current.focus();
   }, []);
-  console.log(tribute);
 
   const upDateTributeHandler = async () => {
     const res = await fetch(
       `https://memorial.adaptable.app/api/v1/users/tribute/${tributeId}`,
       {
         method: "PATCH",
+
         headers: { "Content-Type": "application/json" },
+
         body: JSON.stringify({ tribute }),
       }
     );
-    const data = await res.json();
-    console.log(data);
+
+    await res.json();
+
     if (res.ok) {
       isUpDated(true);
+
       return navigate("/tributes");
     }
   };
+
   const handleOnSubmit = (e) => {
     e.preventDefault();
+
     upDateTributeHandler();
   };
 

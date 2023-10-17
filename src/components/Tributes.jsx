@@ -18,11 +18,17 @@ function Tributes() {
   } = useTribute();
 
   const nameRef = useRef();
+
   const [image, setImage] = useState(null);
+
   const [writeTribute, setWriteTribute] = useState(false);
+
   const [succMsg, setSuccMsg] = useState("");
+
   const [sentTribute, setSentTribute] = useState(false);
+
   const navigate = useNavigate();
+
   const [valid, setIsValid] = useState(false);
 
   const scrollToTributes = useCallback(() => {
@@ -60,8 +66,11 @@ function Tributes() {
 
   const submitTributeHandler = async (e) => {
     e.preventDefault();
+
     setWriteTribute(false);
+
     const tributes = { name, tribute, relationship };
+
     const res = await fetch(
       "https://memorial.adaptable.app/api/v1/users/tribute",
       {
@@ -70,16 +79,22 @@ function Tributes() {
         headers: { "Content-Type": "application/json" },
       }
     );
+
     const data = await res.json();
-    console.log(data);
+
     if (!res.ok) {
       setSuccMsg(data.message);
+
       fetchTributes();
     } else {
       setSentTribute(true);
+
       setSuccMsg(data.message);
+
       setName("");
+
       setTribute("");
+
       setRelationship("");
     }
 
@@ -90,6 +105,7 @@ function Tributes() {
 
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
+
     setImage(selectedImage);
   };
 
@@ -99,6 +115,7 @@ function Tributes() {
 
   const seeAllTribute = () => {
     setWriteTribute((prev) => !prev);
+
     fetchTributes();
   };
 

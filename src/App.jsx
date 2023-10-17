@@ -7,8 +7,8 @@ import Root from "./Root";
 import Login from "./Pages/Login";
 import ErrorPage from "./Pages/Error";
 import ProtectedRoute from "./components/ProtectedRoutes";
-import { lazy, Suspense } from "react";
-import Loader from "./components/Loader";
+import { lazy } from "react";
+import Services from "./Pages/Services";
 const TributeDetail = lazy(() => import("./Pages/TributeDetail"));
 const queryClient = new QueryClient();
 
@@ -20,13 +20,10 @@ function App() {
       errorElement: <ErrorPage />,
       children: [
         { path: "/", element: <HomePage /> },
+        { path: "/services", element: <Services /> },
         {
           path: "/tributes",
-          element: (
-            <Suspense fallback={<Loader />}>
-              <TributesPage />
-            </Suspense>
-          ),
+          element: <TributesPage />,
         },
         {
           path: "/tributes/:tributeId",
@@ -43,11 +40,7 @@ function App() {
     { path: "/Login", element: <Login /> },
   ]);
 
-  return (
-    <Suspense>
-      <RouterProvider router={router} />
-    </Suspense>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

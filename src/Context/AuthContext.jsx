@@ -24,17 +24,25 @@ function AuthProvider({ children }) {
     reducer,
     initiatState
   );
+
   const [username, setUsername] = useState("");
+
   const [isLogin, setIssLoggingin] = useState("Log in");
+
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+
   const [pwd, setPwd] = useState("");
+
   const [errMsg, setErrMsg] = useState("");
+
   const errRef = useRef();
 
   async function Login() {
     try {
       const userData = { username, password: pwd };
+
       setIssLoggingin("Logging in...");
+
       setIsAuthenticating(true);
       const res = await fetch(
         "https://memorial.adaptable.app/api/v1/users/login",
@@ -47,17 +55,24 @@ function AuthProvider({ children }) {
           withCredentials: true,
         }
       );
+
       const data = await res.json();
+
       if (!res.ok) {
         setErrMsg(data.message);
+
         setIssLoggingin("Log in");
+
         setIsAuthenticating(false);
       } else {
         dispatch({ type: "login", payload: userData });
+
         setIssLoggingin("Log in");
+
         setIsAuthenticating(false);
 
         setUsername("");
+
         setPwd("");
       }
     } catch (err) {

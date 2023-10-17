@@ -35,7 +35,6 @@ PostedTributes.propTypes = {
   name: PropTypes.string,
   tribute: PropTypes.string,
   openUpDateForm: PropTypes.func,
-  fetchTributes: PropTypes.func,
   success: PropTypes.bool,
   tributes: PropTypes.array,
 };

@@ -8,7 +8,7 @@ function Headers() {
         <NavLink to="login">
           <img
             src={pic}
-            className=" inset-0 m-auto desktop:w-72 macBook:w-96 macBook:h-96 desktop:h-72 laptop:h-[40rem] laptop:w-[40rem] rounded-full border-8 border-white iphone:w-[14.5rem] iphone:h-[14.5rem] small:w-40 small:h-40 phone:w-60 phone:h-60  phone:top-[12rem] mobile:top-[10rem] mobile:w-96 mobile:h-96 small:top-[8.2rem] iphone:top-[6.7rem] laptop:top-[12rem]"
+            className=" inset-0 m-auto desktop:w-72 macBook:w-96 macBook:h-96 desktop:h-72 laptop:h-[31rem] laptop:w-[31rem] rounded-full border-8 border-white iphone:w-[14.5rem] iphone:h-[14.5rem] small:w-40 small:h-40 phone:w-60 phone:h-60  phone:top-[12rem] mobile:top-[10rem] mobile:w-96 mobile:h-96 small:top-[8.2rem] iphone:top-[6.7rem] laptop:top-[12rem]"
           />
         </NavLink>
       </div>

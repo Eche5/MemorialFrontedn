@@ -36,7 +36,7 @@ function BioData() {
             Biography
           </button>
         </NavLink>
-        <NavLink>
+        <NavLink to="/services">
           <button className="desktop:p-2 phone:px-8 mobile:px-28 macBook:text-[1.2rem] small:p-2 phone:w-[100%] macBook:px-28 iphone:p-4  bg-white border-2 iphone:pr-8 rounded-md flex hover:bg-[#fffbf2]">
             <span className=" phone:pr-4 small:pr-4">
               <img

@@ -5,7 +5,7 @@ function Obituary() {
 
   return (
     <section
-      className=" desktop:ml-36 desktop:mr-36 mobile:ml-20 mobile:mr-20 phone:mx-4 small:mx-3 mt-32 phone:mt-56 text-justify break-all"
+      className=" hyphens-auto desktop:ml-36 desktop:mr-36 mobile:ml-20 mobile:mr-20 phone:mx-4 small:mx-3 mt-32 phone:mt-56 text-justify phone:text-justify "
       ref={bioRef}
     >
       <h1 className=" mb-4 font-bold text-2xl mt-8  text-center">BACKGROUND</h1>

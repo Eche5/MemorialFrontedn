@@ -20,20 +20,27 @@ function Login() {
     isAuthenticated,
     isAuthenticating,
   } = useAuth();
+
   const [showPassword, setShowPassword] = useState(false);
+
   const [isValid, setIsValid] = useState(false);
+
   const usernameDivRef = useRef();
+
   const pwdDivRef = useRef();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   const navigate = useNavigate();
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
+
     Login();
   };
+
   const inputType = showPassword ? "text" : "password";
 
   useEffect(() => {
@@ -61,7 +68,9 @@ function Login() {
   useEffect(() => {
     setErrMsg("");
   }, [username, pwd, setErrMsg]);
+
   const handleUsernameFocus = () => {};
+
   usernameDivRef.current?.classList?.add("focus-outline");
 
   const handleUsernameBlur = () => {
@@ -71,6 +80,7 @@ function Login() {
   const handlePwdFocus = () => {
     pwdDivRef.current.classList.add("focus-outline");
   };
+
   const handlePwdBlur = () => {
     pwdDivRef.current.classList.remove("focus-outline");
   };
@@ -110,7 +120,7 @@ function Login() {
               id="username"
               type="text"
               placeholder="username"
-              className=" text-center"
+              className="pl-4 w-full"
               onChange={(e) => setUsername(e.target.value.trim())}
               value={username}
               required
@@ -135,9 +145,10 @@ function Login() {
               id="password"
               onChange={(e) => setPwd(e.target.value)}
               value={pwd}
+              placeholder="password"
               required
               type={inputType}
-              className=" text-center"
+              className="pl-4 w-full"
             />
             {showPassword && (
               <img

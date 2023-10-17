@@ -2,12 +2,17 @@ import PropTypes from "prop-types";
 import { useTribute } from "../Context/TributeContext";
 import { useAuth } from "../Context/AuthContext";
 import { useState } from "react";
+import Loader from "./Loader";
 
 function TributeList({ openUpDateForm, tribute }) {
-  const { fetchTributes, fetchOneTribute } = useTribute();
+  const { fetchTributes, fetchOneTribute, isLoaded } = useTribute();
+
   const isoDate = tribute.date;
+
   const { isAuthenticated } = useAuth();
+
   const [success, setSuccess] = useState(false);
+
   const date = new Date(isoDate);
 
   const options = {
@@ -78,6 +83,7 @@ function TributeList({ openUpDateForm, tribute }) {
           </p>
         </li>
       )}
+      {isLoaded && !tribute && <Loader />}
     </>
   );
 }
