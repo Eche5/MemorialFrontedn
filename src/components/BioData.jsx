@@ -54,14 +54,10 @@ function BioData() {
             <CandleIcon className="hidden h-4 w-4 sm:block" />
             Services
           </NavLink>
-          <span
-            title="Coming soon"
-            aria-disabled="true"
-            className={`${linkBase} cursor-default text-ink-muted/60`}
-          >
+          <NavLink to="/photos" className={navClass}>
             <ImageIcon className="hidden h-4 w-4 sm:block" />
             Photos
-          </span>
+          </NavLink>
           <NavLink to="/tributes" className={navClass}>
             <FeatherIcon className="hidden h-4 w-4 sm:block" />
             Tributes

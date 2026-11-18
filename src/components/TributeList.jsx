@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useTribute } from "../Context/TributeContext";
 import { useAuth } from "../Context/AuthContext";
 import { PencilIcon, TrashIcon } from "./Icons";
+import { USERS_API } from "../config";
 
 const dateOptions = {
   year: "numeric",
@@ -31,7 +32,7 @@ function TributeList({ openUpDateForm, tribute }) {
 
     try {
       const response = await fetch(
-        `https://memorial.adaptable.app/api/v1/users/tribute`,
+        `${USERS_API}/tribute`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useTribute } from "../Context/TributeContext";
 import { ArrowLeftIcon } from "../components/Icons";
+import { USERS_API } from "../config";
 
 function TributeDetail() {
   const [tribute, setTribute] = useState("");
@@ -36,7 +37,7 @@ function TributeDetail() {
 
     try {
       const res = await fetch(
-        `https://memorial.adaptable.app/api/v1/users/tribute/${tributeId}`,
+        `${USERS_API}/tribute/${tributeId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

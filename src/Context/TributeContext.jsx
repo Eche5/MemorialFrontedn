@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import PropTypes from "prop-types";
+import { USERS_API } from "../config";
 
 const TributeContext = createContext();
 
@@ -38,7 +39,7 @@ function TributeProvider({ children }) {
       setIsLoaded(true);
 
       const res = await fetch(
-        "https://memorial.adaptable.app/api/v1/users/tribute"
+        `${USERS_API}/tribute`
       );
 
       const data = await res.json();
@@ -61,7 +62,7 @@ function TributeProvider({ children }) {
   const fetchOneTribute = async (id) => {
     try {
       const response = await fetch(
-        `https://memorial.adaptable.app/api/v1/users/${id}`
+        `${USERS_API}/${id}`
       );
 
       const data = await response.json();

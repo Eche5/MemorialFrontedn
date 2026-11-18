@@ -4,6 +4,7 @@ import { useTribute } from "../Context/TributeContext";
 import { FeatherIcon } from "./Icons";
 
 import PostedTributes from "./PostedTributes";
+import { USERS_API } from "../config";
 
 function Tributes() {
   const {
@@ -60,7 +61,7 @@ function Tributes() {
 
     try {
       const res = await fetch(
-        "https://memorial.adaptable.app/api/v1/users/tribute",
+        `${USERS_API}/tribute`,
         {
           method: "POST",
           body: JSON.stringify({ name, tribute, relationship }),

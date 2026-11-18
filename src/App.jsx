@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoutes";
 import { lazy, Suspense } from "react";
 import Loader from "./components/Loader";
 import Services from "./Pages/Services";
+import Photos from "./Pages/Photos";
 const TributeDetail = lazy(() => import("./Pages/TributeDetail"));
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ function App() {
       children: [
         { path: "/", element: <HomePage /> },
         { path: "/services", element: <Services /> },
+        { path: "/photos", element: <Photos /> },
         {
           path: "/tributes",
           element: <TributesPage />,

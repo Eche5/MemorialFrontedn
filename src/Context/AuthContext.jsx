@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import { USERS_API } from "../config";
 
 const AuthContext = createContext();
 
@@ -45,7 +46,7 @@ function AuthProvider({ children }) {
 
       setIsAuthenticating(true);
       const res = await fetch(
-        "https://memorial.adaptable.app/api/v1/users/login",
+        `${USERS_API}/login`,
         {
           method: "POST",
           headers: {
