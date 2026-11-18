@@ -6,7 +6,7 @@ function TributesPage() {
   }, []);
 
   return (
-    <section className=" transition-all">
+    <section>
       <Tributes />
     </section>
   );

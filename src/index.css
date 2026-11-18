@@ -1,22 +1,82 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body {
-  background-color: #fffbf2;
-  font-family: sans-serif;
-}
-.instructions {
-  font-size: 0.75rem;
-  border-radius: 0.5rem;
-  background: #000;
-  color: #fff;
-  padding: 0.25rem;
-  position: relative;
-  bottom: -10px;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ivory font-sans text-ink antialiased;
+    position: relative;
+    isolation: isolate;
+  }
+
+  /*
+    Background: warm ivory with soft candle-like light from the top,
+    gentle glows at the edges and a faint paper grain.
+    Uses a fixed pseudo-element (works on iOS, unlike background-attachment: fixed).
+  */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: #faf7f2;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.28 0 0 0 0 0.2 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse 70% 45% at 50% -5%, rgba(214, 190, 150, 0.38), transparent 70%),
+      radial-gradient(ellipse 45% 55% at 0% 100%, rgba(201, 179, 143, 0.16), transparent 70%),
+      radial-gradient(ellipse 45% 55% at 100% 85%, rgba(190, 172, 150, 0.14), transparent 70%),
+      linear-gradient(to bottom, #f6f0e6, #faf7f2 40%, #f7f2ea);
+  }
+
+  ::selection {
+    @apply bg-gold-soft/40 text-ink;
+  }
 }
 
-.instructions > svg {
-  margin-right: 0.25rem;
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium
+      transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft
+      focus-visible:ring-offset-2 focus-visible:ring-offset-ivory disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-ink text-ivory hover:bg-ink-soft;
+  }
+  .btn-ghost {
+    @apply btn border border-line bg-white text-ink hover:border-gold-soft hover:bg-gold-tint;
+  }
+
+  /* Form fields */
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-ink-soft;
+  }
+  .field {
+    @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-[0.95rem] text-ink
+      placeholder:text-ink-muted/70 transition-colors focus:border-gold-soft focus:outline-none
+      focus:ring-4 focus:ring-gold-soft/20;
+  }
+
+  /* Cards */
+  .card {
+    @apply rounded-2xl border border-line bg-white shadow-soft;
+  }
+
+  /* Small decorative divider: line · dot · line */
+  .ornament {
+    @apply flex items-center justify-center gap-3 text-gold-soft;
+  }
+  .ornament::before,
+  .ornament::after {
+    content: "";
+    @apply h-px w-12 bg-current;
+  }
 }
 
 .offscreen {
@@ -27,10 +87,7 @@ body {
 .hide {
   display: none;
 }
+
 .errmsg {
-  background-color: lightpink;
-  color: firebrick;
-  font-weight: bold;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
+  @apply mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800;
 }

@@ -5,38 +5,43 @@ import { Suspense, lazy } from "react";
 const TributeList = lazy(() => import("./TributeList"));
 
 function PostedTributes({ openUpDateForm }) {
-  const { tributes, success } = useTribute();
+  const { tributes, success, isLoaded } = useTribute();
+
+  if (!success) {
+    return (
+      <p className="mt-10 text-center text-ink-muted">
+        We couldn&apos;t load the tributes right now. Please try again later.
+      </p>
+    );
+  }
+
+  if (isLoaded && tributes.length === 0) return <Loader />;
+
+  if (tributes.length === 0) {
+    return (
+      <p className="mt-10 text-center font-serif text-lg italic text-ink-muted">
+        No tributes yet. Be the first to share a memory.
+      </p>
+    );
+  }
 
   return (
-    <section className="flex flex-col justify-center items-center">
-      <div className="desktop:w-[800px] phone:w-[400px]">
-        <ul className="w-full justify-between p-4 transition-all">
-          {tributes.map((tribute) => (
-            <Suspense fallback={<Loader />} key={tribute._id}>
-              <TributeList
-                tribute={tribute}
-                key={tribute._id}
-                openUpDateForm={openUpDateForm}
-              />
-            </Suspense>
-          ))}
-        </ul>
-      </div>
-      {!success && (
-        <div className="flex flex-col justify-center items-center mt-4">
-          <h1>Something went wrong ⛔</h1>
-        </div>
-      )}
-    </section>
+    <Suspense fallback={<Loader />}>
+      <ul className="mt-10 space-y-5">
+        {tributes.map((tribute) => (
+          <TributeList
+            tribute={tribute}
+            key={tribute._id}
+            openUpDateForm={openUpDateForm}
+          />
+        ))}
+      </ul>
+    </Suspense>
   );
 }
 
 PostedTributes.propTypes = {
-  name: PropTypes.string,
-  tribute: PropTypes.string,
   openUpDateForm: PropTypes.func,
-  success: PropTypes.bool,
-  tributes: PropTypes.array,
 };
 
 export default PostedTributes;

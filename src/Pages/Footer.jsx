@@ -1,8 +1,11 @@
 function Footer() {
   return (
-    <footer className=" m-auto text-center bg-white p-4 mt-8">
-      <p className=" text-xl text-black">
-        &copy; Copyright {new Date().getFullYear()} Designed by Eche Inc.
+    <footer className="mt-16 border-t border-line/70 px-4 py-10 text-center">
+      <p className="font-serif text-lg italic text-ink-soft">
+        Forever in our hearts
+      </p>
+      <p className="mt-2 text-xs text-ink-muted">
+        &copy; {new Date().getFullYear()} &middot; Designed by Eche Inc.
       </p>
     </footer>
   );

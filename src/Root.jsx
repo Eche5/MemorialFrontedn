@@ -7,10 +7,12 @@ function Root() {
   const { headerRef } = useTribute();
 
   return (
-    <div ref={headerRef}>
+    <div ref={headerRef} className="flex min-h-screen flex-col">
       <Headers />
       <BioData />
-      <Outlet />
+      <main className="flex-1">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );

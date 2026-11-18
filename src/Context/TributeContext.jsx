@@ -47,11 +47,13 @@ function TributeProvider({ children }) {
         setTributes(data.data);
 
         setSuccess(true);
-
-        setIsLoaded(false);
+      } else {
+        setSuccess(false);
       }
     } catch (error) {
       setSuccess(false);
+    } finally {
+      setIsLoaded(false);
     }
   }, []);
 

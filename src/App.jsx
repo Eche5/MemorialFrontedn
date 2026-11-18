@@ -7,7 +7,8 @@ import Root from "./Root";
 import Login from "./Pages/Login";
 import ErrorPage from "./Pages/Error";
 import ProtectedRoute from "./components/ProtectedRoutes";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
+import Loader from "./components/Loader";
 import Services from "./Pages/Services";
 const TributeDetail = lazy(() => import("./Pages/TributeDetail"));
 const queryClient = new QueryClient();
@@ -30,7 +31,9 @@ function App() {
           element: (
             <ProtectedRoute>
               <QueryClientProvider client={queryClient}>
-                <TributeDetail />
+                <Suspense fallback={<Loader />}>
+                  <TributeDetail />
+                </Suspense>
               </QueryClientProvider>
             </ProtectedRoute>
           ),

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import { useTribute } from "../Context/TributeContext";
+import { FeatherIcon } from "./Icons";
 
 import PostedTributes from "./PostedTributes";
 
@@ -19,17 +19,15 @@ function Tributes() {
 
   const nameRef = useRef();
 
-  const [image, setImage] = useState(null);
-
   const [writeTribute, setWriteTribute] = useState(false);
 
-  const [succMsg, setSuccMsg] = useState("");
+  const [msg, setMsg] = useState({ text: "", ok: true });
 
-  const [sentTribute, setSentTribute] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const navigate = useNavigate();
 
-  const [valid, setIsValid] = useState(false);
+  const valid = name.length >= 3 && tribute.length >= 3;
 
   const scrollToTributes = useCallback(() => {
     if (tributeRef.current) {
@@ -47,179 +45,157 @@ function Tributes() {
     }
   }, [writeTribute]);
 
+  useEffect(() => {
+    fetchTributes();
+  }, [fetchTributes]);
+
   const openUpDateForm = (id) => {
     navigate(`/tributes/${id}`);
   };
 
-  //form validation
-  useEffect(() => {
-    if (name.length >= 3 && tribute.length >= 3) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
-  }, [name, tribute]);
-
-  useEffect(() => {
-    fetchTributes();
-  }, [name, fetchTributes]);
-
   const submitTributeHandler = async (e) => {
     e.preventDefault();
 
-    setWriteTribute(false);
+    setSubmitting(true);
 
-    const tributes = { name, tribute, relationship };
+    try {
+      const res = await fetch(
+        "https://memorial.adaptable.app/api/v1/users/tribute",
+        {
+          method: "POST",
+          body: JSON.stringify({ name, tribute, relationship }),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-    const res = await fetch(
-      "https://memorial.adaptable.app/api/v1/users/tribute",
-      {
-        method: "POST",
-        body: JSON.stringify(tributes),
-        headers: { "Content-Type": "application/json" },
+      const data = await res.json();
+
+      setMsg({ text: data.message, ok: res.ok });
+
+      if (res.ok) {
+        setName("");
+        setTribute("");
+        setRelationship("");
+        setWriteTribute(false);
       }
-    );
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      setSuccMsg(data.message);
 
       fetchTributes();
-    } else {
-      setSentTribute(true);
-
-      setSuccMsg(data.message);
-
-      setName("");
-
-      setTribute("");
-
-      setRelationship("");
+    } catch {
+      setMsg({
+        text: "We couldn't send your tribute. Please try again.",
+        ok: false,
+      });
+    } finally {
+      setSubmitting(false);
+      setTimeout(() => setMsg({ text: "", ok: true }), 4000);
     }
-
-    setTimeout(() => {
-      setSuccMsg("");
-    }, 3000);
   };
 
-  const handleImageChange = (e) => {
-    const selectedImage = e.target.files[0];
-
-    setImage(selectedImage);
-  };
-
-  const writeTributeHandler = () => {
+  const toggleForm = () => {
     setWriteTribute((prev) => !prev);
-  };
-
-  const seeAllTribute = () => {
-    setWriteTribute((prev) => !prev);
-
-    fetchTributes();
+    if (writeTribute) fetchTributes();
   };
 
   return (
-    <>
-      <section className="flex justify-center items-center">
-        <div className="text-center">
-          <h1 className="mb-4 mt-16 font-bold text-3xl" ref={tributeRef}>
-            Tributes
-          </h1>
-          {!writeTribute && (
-            <button
-              onClick={writeTributeHandler}
-              className="p-2 bg-white border-2 rounded-md flex hover:bg-[#fffbf2] justify-center m-4"
-            >
-              Write a tribute
-            </button>
-          )}
-          {writeTribute && (
-            <button
-              onClick={seeAllTribute}
-              className="p-2 bg-white border-2 rounded-md flex hover:bg-[#fffbf2] justify-center m-4"
-            >
-              See all Tributes
-            </button>
-          )}
-          {writeTribute && (
-            <section className=" flex flex-col justify-center p-4  rounded-lg">
-              <p>
-                Fill out the fields below to leave memories, condolences, and/or
-                photos.
-              </p>
-              <form onSubmit={submitTributeHandler}>
-                <div className="flex-col flex justify-evenly flex-grow-0 p-2 gap-4">
-                  <input
-                    id="name"
-                    type="text"
-                    required
-                    value={name}
-                    ref={nameRef}
-                    placeholder="Your Name"
-                    onChange={(e) => setName(e.target.value)}
-                    className=" rounded-lg p-2 border-gray-600 border-2"
-                  />
-                  <input
-                    id="relationship"
-                    type="text"
-                    value={relationship}
-                    placeholder="Your Relationship"
-                    onChange={(e) => setRelationship(e.target.value)}
-                    className=" rounded-lg p-2 border-gray-600 border-2"
-                  />
-                  <textarea
-                    id="message"
-                    rows="10"
-                    type="text"
-                    required
-                    value={tribute}
-                    placeholder="Your Tribute"
-                    className=" rounded-lg p-2 border-gray-600 border-2"
-                    onChange={(e) => setTribute(e.target.value)}
-                  />
-                  <label className="block">
-                    <span className="sr-only">Choose profile photo</span>
-                    <input
-                      type="file"
-                      className="block w-full text-sm text-slate-500
-      file:mr-4 file:py-2 file:px-4
-      file:rounded-full file:border-0
-      file:text-sm file:font-semibold
-      file:bg-violet-50 file:text-violet-700
-      hover:file:bg-violet-100
-    "
-                    />
-                  </label>
-                </div>
-                <button
-                  type="submit"
-                  className={
-                    !valid
-                      ? " ml-2 cursor-not-allowed bg-white border-2 rounded-full px-4 py-2 flex hover:bg-[#fffbf2]"
-                      : " ml-2 bg-white border-2 rounded-full flex hover:bg-[#fffbf2] px-4 py-2"
-                  }
-                  disabled={!valid}
-                >
-                  Submit
-                </button>
-              </form>
-            </section>
-          )}
-
-          {sentTribute && <h1>{succMsg}</h1>}
+    <section className="mx-auto max-w-2xl px-5 py-16">
+      <div ref={tributeRef} className="scroll-mt-20 text-center">
+        <h2 className="font-serif text-3xl font-medium text-ink">Tributes</h2>
+        <div className="ornament mt-4">
+          <span className="h-1 w-1 rounded-full bg-current" />
         </div>
-      </section>
+        <p className="mx-auto mt-4 max-w-md text-ink-soft">
+          Share a memory, a prayer or a few words of comfort with the family.
+        </p>
+        <button
+          onClick={toggleForm}
+          className={`mt-6 ${writeTribute ? "btn-ghost" : "btn-primary"}`}
+        >
+          {writeTribute ? (
+            "See all tributes"
+          ) : (
+            <>
+              <FeatherIcon className="h-4 w-4" />
+              Write a tribute
+            </>
+          )}
+        </button>
+      </div>
+
+      {msg.text && (
+        <p
+          role="status"
+          className={`mx-auto mt-6 max-w-md rounded-xl border px-4 py-3 text-center text-sm ${
+            msg.ok
+              ? "border-gold-soft/50 bg-gold-tint text-ink"
+              : "border-red-200 bg-red-50 text-red-800"
+          }`}
+        >
+          {msg.text}
+        </p>
+      )}
+
+      {writeTribute && (
+        <form onSubmit={submitTributeHandler} className="card mt-10 p-6 sm:p-8">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label htmlFor="name" className="field-label">
+                Your name
+              </label>
+              <input
+                id="name"
+                type="text"
+                required
+                value={name}
+                ref={nameRef}
+                placeholder="e.g. Ada Okafor"
+                onChange={(e) => setName(e.target.value)}
+                className="field"
+              />
+            </div>
+            <div>
+              <label htmlFor="relationship" className="field-label">
+                Relationship{" "}
+                <span className="font-normal text-ink-muted">(optional)</span>
+              </label>
+              <input
+                id="relationship"
+                type="text"
+                value={relationship}
+                placeholder="e.g. Friend, Colleague"
+                onChange={(e) => setRelationship(e.target.value)}
+                className="field"
+              />
+            </div>
+          </div>
+          <div className="mt-5">
+            <label htmlFor="message" className="field-label">
+              Your tribute
+            </label>
+            <textarea
+              id="message"
+              rows="7"
+              required
+              value={tribute}
+              placeholder="Share a memory or a few kind words…"
+              className="field resize-y leading-relaxed"
+              onChange={(e) => setTribute(e.target.value)}
+            />
+          </div>
+          <div className="mt-6 flex justify-end">
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={!valid || submitting}
+            >
+              {submitting ? "Sending…" : "Share tribute"}
+            </button>
+          </div>
+        </form>
+      )}
+
       {!writeTribute && <PostedTributes openUpDateForm={openUpDateForm} />}
-    </>
+    </section>
   );
 }
-
-Tributes.propTypes = {
-  name: PropTypes.string,
-  tribute: PropTypes.string,
-  setTribute: PropTypes.func,
-  setName: PropTypes.func,
-};
 
 export default Tributes;

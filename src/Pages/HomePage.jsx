@@ -19,7 +19,7 @@ function HomePage() {
     scrollToTop();
   }, [scrollToTop]);
   return (
-    <section className=" transition-all">
+    <section>
       <Obituary />
     </section>
   );

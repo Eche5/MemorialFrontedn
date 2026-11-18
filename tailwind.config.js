@@ -2,16 +2,31 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    screens: {
-      small: "310px",
-      iphone: "360px",
-      phone: "390px",
-      mobile: "768px",
-      macBook: "800px",
-      desktop: "1280px",
-      laptop: "1536px",
+    extend: {
+      colors: {
+        // Warm, quiet palette suited to a memorial page
+        ivory: "#faf7f2",
+        parchment: "#f3eee5",
+        line: "#e6dfd3",
+        ink: {
+          DEFAULT: "#2a2622",
+          soft: "#5b544c",
+          muted: "#8a8178",
+        },
+        gold: {
+          DEFAULT: "#a07f4f",
+          soft: "#c9b38f",
+          tint: "#f5efe4",
+        },
+      },
+      fontFamily: {
+        serif: ['"Cormorant Garamond"', "Georgia", "serif"],
+        sans: ['"Inter"', "system-ui", "-apple-system", "sans-serif"],
+      },
+      boxShadow: {
+        soft: "0 1px 2px rgba(42,38,34,0.04), 0 8px 24px -12px rgba(42,38,34,0.12)",
+      },
     },
-    extend: {},
   },
   plugins: [],
 };

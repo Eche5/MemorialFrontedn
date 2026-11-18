@@ -1,78 +1,74 @@
-import ink from "../assets/icons8-ink-50.png";
-import photos from "../assets/icons8-photos.gif";
-import candle from "../assets/icons8-candle.gif";
-import book from "../assets/icons8-book.gif";
 import { NavLink } from "react-router-dom";
 import { useTribute } from "../Context/TributeContext";
+import { BookIcon, CandleIcon, FeatherIcon, ImageIcon } from "./Icons";
+
+const linkBase =
+  "flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full px-2 py-2 text-[13px] font-medium transition-colors duration-200 sm:flex-none sm:px-5 sm:py-2.5 sm:text-sm";
+
+const navClass = ({ isActive }) =>
+  `${linkBase} ${
+    isActive
+      ? "bg-ink text-ivory"
+      : "text-ink-soft hover:bg-gold-tint hover:text-ink"
+  }`;
+
 function BioData() {
   const { bioRef } = useTribute();
 
-  const scrollToFooter = () => {
+  const scrollToBio = () => {
     if (bioRef.current) {
       bioRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <section className=" text-center ">
-      <h1 className=" text-3xl mb-2 font-serif">
-        Mrs. Sunmola Christiana Titilayo
-      </h1>
-      <p className=" mb-2">19th February 1980 - 23rd December 2022</p>
-      <h1 className=" text-[1rem] mb-4">42 YEARS OF IMPACT! </h1>
-      <p className=" mb-4">Kaduna, Nigeria</p>
-      <div className=" desktop:flex justify-center gap-2 phone:grid phone:grid-cols-2 iphone:grid iphone:grid-cols-2 small:grid small:grid-cols-2 phone:m-4 small:m-4">
-        <NavLink to="/">
-          <button
-            onClick={scrollToFooter}
-            className="desktop:p-2 phone:px-8 mobile:px-28 iphone:p-4 small:p-2 macBook:text-[1.2rem] phone:w-[100%] macBook:px-28  bg-white border-2 rounded-md flex hover:bg-[#fffbf2]"
-          >
-            <span className=" phone:pr-4 small:pr-4">
-              <img
-                src={book}
-                className=" desktop:w-6 desktop:h-6 phone:w-6 phone:h-6 iphone:w-7 iphone:h-7 mobile:w-6 small:w-7 small:h-7 macBook:w-10 macBook:h-10"
-              />
-            </span>
-            Biography
-          </button>
-        </NavLink>
-        <NavLink to="/services">
-          <button className="desktop:p-2 phone:px-8 mobile:px-28 macBook:text-[1.2rem] small:p-2 phone:w-[100%] macBook:px-28 iphone:p-4  bg-white border-2 iphone:pr-8 rounded-md flex hover:bg-[#fffbf2]">
-            <span className=" phone:pr-4 small:pr-4">
-              <img
-                src={candle}
-                className=" desktop:w-6 desktop:h-6 phone:w-6 phone:h-6 mobile:h-6 mobile:w-6 iphone:w-7 iphone:h-7 small:w-7 small:h-7  macBook:w-10 macBook:h-10"
-              />
-            </span>
-            Services
-          </button>
-        </NavLink>
-        <NavLink>
-          <button className="desktop:p-2 phone:px-8 small:p-2 macBook:text-[1.2rem] phone:w-[100%] small:pr-8 macBook:px-28 mobile:px-28 iphone:p-4 iphone:pr-10 bg-white border-2 rounded-md flex hover:bg-[#fffbf2]">
-            <span className=" phone:pr-4 small:pr-4 ">
-              <img
-                src={photos}
-                className=" desktop:w-6 desktop:h-6 phone:w-6 phone:h-6 iphone:w-7 iphone:h-7 mobile:w-6 small:w-7 small:h-7  macBook:w-10 macBook:h-10"
-              />
-            </span>
-            Photos
-          </button>
-        </NavLink>
+    <>
+      <section className="px-4 pt-8 text-center">
+        <p className="text-xs font-medium uppercase tracking-[0.3em] text-gold">
+          In loving memory of
+        </p>
+        <h1 className="mx-auto mt-3 max-w-2xl font-serif text-4xl font-medium leading-tight text-ink sm:text-5xl">
+          Mrs. Sunmola Christiana Titilayo
+        </h1>
+        <p className="mt-4 font-serif text-xl italic text-ink-soft">
+          19th February 1980 &ndash; 23rd December 2022
+        </p>
+        <div className="ornament my-5">
+          <span className="h-1.5 w-1.5 rotate-45 bg-current" />
+        </div>
+        <p className="text-sm text-ink-muted">
+          42 years of impact &middot; Kaduna, Nigeria
+        </p>
+      </section>
 
-        <NavLink to="/tributes">
-          <button className="desktop:p-2 phone:px-8 small:p-2 macBook:text-[1.2rem] small:pr-3 macBook:px-28 phone:w-[100%] mobile:px-28 iphone:p-4 iphone:pr-9 bg-white border-2 rounded-md flex hover:bg-[#fffbf2]">
-            <span className=" phone:pr-4 small:pr-4">
-              <img
-                src={ink}
-                alt="ink"
-                className=" desktop:w-6 desktop:h-6 phone:w-6 phone:h-6 iphone:w-7 iphone:h-7 mobile:w-6 small:w-7 small:h-7  macBook:w-10 macBook:h-10"
-              />
-            </span>
+      <nav
+        aria-label="Memorial sections"
+        className="sticky top-0 z-20 mt-10 border-y border-line/70 bg-ivory/85 backdrop-blur-md"
+      >
+        <div className="mx-auto flex max-w-3xl gap-1 px-2 py-2 sm:justify-center sm:px-3">
+          <NavLink to="/" end onClick={scrollToBio} className={navClass}>
+            <BookIcon className="hidden h-4 w-4 sm:block" />
+            Biography
+          </NavLink>
+          <NavLink to="/services" className={navClass}>
+            <CandleIcon className="hidden h-4 w-4 sm:block" />
+            Services
+          </NavLink>
+          <span
+            title="Coming soon"
+            aria-disabled="true"
+            className={`${linkBase} cursor-default text-ink-muted/60`}
+          >
+            <ImageIcon className="hidden h-4 w-4 sm:block" />
+            Photos
+          </span>
+          <NavLink to="/tributes" className={navClass}>
+            <FeatherIcon className="hidden h-4 w-4 sm:block" />
             Tributes
-          </button>
-        </NavLink>
-      </div>
-    </section>
+          </NavLink>
+        </div>
+      </nav>
+    </>
   );
 }
 
